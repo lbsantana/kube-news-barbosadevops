@@ -1,0 +1,42 @@
+# version: "3.8"
+
+services:
+  postgres:
+    image: postgres:${POSTGRES_TAG}
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      PGDATA: /var/lib/postgresql/18/docker
+    volumes:
+      - postgres_docker_vol:/var/lib/postgresql/18/docker
+    networks:
+      - kube_news_net
+
+  kube-news-barbosadevops:
+    image: cloudbarbosa/kube-news-barbosadevops:${KUBE_NEWS_TAG}
+    build: 
+      context: ./src
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - kube_news_net
+    depends_on:
+      - postgres
+    environment:
+      DB_USERNAME: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_DATABASE: ${POSTGRES_DB}
+      DB_HOST: postgres
+
+volumes:
+  postgres_docker_vol:
+    name: postgres_docker_vol
+
+networks:
+  kube_news_net:
+    driver: bridge
+    name: kube_news_net
