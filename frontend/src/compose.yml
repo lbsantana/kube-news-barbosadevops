@@ -1,42 +1,50 @@
-# version: "3.8"
+version: "3.8"
 
 services:
   postgres:
-    image: postgres:${POSTGRES_TAG}
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-kubedevnews}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-Pg#123}
+      POSTGRES_DB: ${POSTGRES_DB:-kubedevnews}
+    volumes:
+      - postgres_docker_vol:/var/lib/postgresql/data
+    # Em produção, remova essa linha para não expor o banco
     ports:
       - "5432:5432"
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-      PGDATA: /var/lib/postgresql/18/docker
-    volumes:
-      - postgres_docker_vol:/var/lib/postgresql/18/docker
     networks:
       - kube_news_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-kubedevnews}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  kube-news-barbosadevops:
-    image: cloudbarbosa/kube-news-barbosadevops:${KUBE_NEWS_TAG}
-    build: 
-      context: ./src
+  kube-news:
+    build:
+      context: .
       dockerfile: Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
     ports:
       - "8080:8080"
+    environment:
+      DB_USERNAME: ${POSTGRES_USER:-kubedevnews}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-Pg#123}
+      DB_DATABASE: ${POSTGRES_DB:-kubedevnews}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_SSL_REQUIRE: "false"
+      NODE_ENV: production
     networks:
       - kube_news_net
-    depends_on:
-      - postgres
-    environment:
-      DB_USERNAME: ${POSTGRES_USER}
-      DB_PASSWORD: ${POSTGRES_PASSWORD}
-      DB_DATABASE: ${POSTGRES_DB}
-      DB_HOST: postgres
+    restart: unless-stopped
 
 volumes:
   postgres_docker_vol:
-    name: postgres_docker_vol
 
 networks:
   kube_news_net:
     driver: bridge
-    name: kube_news_net
