@@ -7,7 +7,7 @@ terraform {
   }
   backend "s3" {
     bucket       = "barbosadevops-remote-state-backend-667516053160"
-    key          = "networking/terraform.tfstate"
+    key          = "platform/terraform.tfstate"
     region       = "us-east-2"
     use_lockfile = true
   }
