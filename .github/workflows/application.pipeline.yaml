@@ -40,7 +40,7 @@ jobs:
           docker build \
             -f APP/frontend/src/Dockerfile \
             -t $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
-            APP/frontend
+            APP/frontend/src
 
           docker push $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
