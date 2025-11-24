@@ -31,7 +31,7 @@ variable "db_username" {
 
 variable "db_password" {
   type        = string
-  default     = "Pg#123"
+  default     = "(VJ7fbVmW5$FLOrDq!7F26>O)dp!"  # exemplo forte pra lab
   sensitive   = true
-  description = "Senha do banco RDS (use SSM/Secrets em produção; default simples para lab)."
+  description = "Senha do banco RDS."
 }

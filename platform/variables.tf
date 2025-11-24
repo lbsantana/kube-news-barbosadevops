@@ -43,9 +43,9 @@ variable "eks_cluster" {
     node_group_instance_types         = ["t3.micro"]
     node_group_capacity_type          = "ON_DEMAND"
     scaling_config = {
-      desired_size = 4
-      max_size     = 4
-      min_size     = 1
+      desired_size = 5
+      max_size     = 6
+      min_size     = 3
     }
   }
 }

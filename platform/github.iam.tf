@@ -44,7 +44,7 @@ resource "aws_iam_policy" "github" {
           "ecr:PutImage",
           "ecr:UploadLayerPart"
         ]
-        Resource = aws_ecr_repository.foo[*].arn
+        Resource = [for repo in aws_ecr_repository.this : repo.arn]
       }
     ]
   })
