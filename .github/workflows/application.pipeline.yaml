@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 env:
-  ECR_REPOSITORY: kube-backend-repo
+  ECR_REPOSITORY: kube-backend-repo # troque pro nome real do repo no ECR se for outro
   IMAGE_TAG: ${{ github.sha }}
 
 jobs:
@@ -38,9 +38,9 @@ jobs:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           docker build \
-            -f kube-news-barbosadevops/APP/frontend/src/Dockerfile \
+            -f APP/frontend/src/Dockerfile \
             -t $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
-            kube-news-barbosadevops//APP/frontend
+            APP/frontend
 
           docker push $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
@@ -53,6 +53,7 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
+          # se seu kustomization.yaml estiver em kubernetes/Frontend, mude o cd
           cd kubernetes
           kustomize edit set image $REGISTRY/$ECR_REPOSITORY=$REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           git config user.name "github-actions[bot]"
