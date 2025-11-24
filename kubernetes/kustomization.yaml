@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: kubenews
+
+resources:
+- namespace.yaml
+- secret-db.yaml
+- Frontend/deployment-app.yaml
+- Frontend/service-app.yaml
+- ingress.yaml
+
+images:
+- name: 667516053160.dkr.ecr.us-east-2.amazonaws.com/kube-backend-repo
+  newTag: v2.0

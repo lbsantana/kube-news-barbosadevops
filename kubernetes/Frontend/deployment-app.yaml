@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubenews
+  namespace: kubenews
+  labels:
+    app: kubenews
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubenews
+  template:
+    metadata:
+      labels:
+        app: kubenews
+    spec:
+      containers:
+        - name: kubenews
+          image: 667516053160.dkr.ecr.us-east-2.amazonaws.com/kube-backend-repo:v2.0 # ou a tag que sua pipeline criou
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NODE_ENV
+              value: "production"
+          envFrom:
+            - secretRef:
+                name: kubenews-db
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30 # dá mais tempo para app conectar no banco
+            timeoutSeconds: 3 # aumenta tempo de resposta
+            periodSeconds: 10 # checa a cada 10s
+            failureThreshold: 5 # só marca como "não pronto" após 5 falhas seguidas
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 60 # espera mais antes de começar a checar
+            timeoutSeconds: 3 # aumenta tempo de resposta
+            periodSeconds: 15 # checa a cada 15s
+            failureThreshold: 5 # só reinicia após 5 falhas seguidas
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

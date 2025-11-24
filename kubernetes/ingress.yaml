@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kube-news-load-balancer
+  namespace: kubenews # mesmo namespace da app
+  annotations:
+    # tira o nome fixo pra não bater no DuplicateLoadBalancerName
+    # alb.ingress.kubernetes.io/load-balancer-name: kube-news-load-balancer
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/subnets: subnet-062e760ed53d0f3e2,subnet-0bb5ee06d71b48bf4
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-path: /healthz
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kubenews-service
+                port:
+                  number: 80
