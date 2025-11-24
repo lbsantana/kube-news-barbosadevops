@@ -40,7 +40,7 @@ jobs:
           docker build \
             -f kube-news-barbosadevops/APP/frontend/src/Dockerfile \
             -t $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
-            /APP/frontend
+            kube-news-barbosadevops//APP/frontend
 
           docker push $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
