@@ -1,8 +1,6 @@
 # Kube-News – Plataforma Cloud-Native em AWS com EKS, RDS e CI/CD
 
-<p align="center">
-  <img src="docs/architecture-kubenews.png" alt="Arquitetura Kube-News" width="600" />
-</p>
+![Arquitetura Kube-News](docs/architecture-kubenews.png)
 
 > 🧰 **Stack Principal:** AWS · VPC · Amazon EKS · Amazon RDS · Amazon ECR · ALB (AWS Load Balancer Controller) · Terraform · Kubernetes · Docker · Docker Compose · kind · GitHub Actions · OIDC · Kustomize · Node.js · Express · PostgreSQL
 
