@@ -8,7 +8,7 @@ resource "aws_security_group" "kube_news_rds" {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/24"] # ajuste pro CIDR da sua VPC
+    cidr_blocks = ["10.0.0.0/24"]
   }
 
   egress {
