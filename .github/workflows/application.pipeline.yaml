@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 env:
-  ECR_REPOSITORY: kube-backend-repo # troque pro nome real do repo no ECR se for outro
+  ECR_REPOSITORY: kube-backend-repo
   IMAGE_TAG: ${{ github.sha }}
 
 jobs:
