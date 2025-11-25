@@ -5,6 +5,7 @@ output "rds_endpoint" {
 }
 
 output "db_password" {
-  value       = var.db_password
+  value       = var.db_settings.db_password
+  description = "Senha do banco de dados RDS"
   sensitive   = true
 }
