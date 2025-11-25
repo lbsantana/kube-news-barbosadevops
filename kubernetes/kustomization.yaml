@@ -13,4 +13,4 @@ resources:
 images:
 - name: 667516053160.dkr.ecr.us-east-2.amazonaws.com/kube-backend-repo
   newName: 667516053160.dkr.ecr.us-east-2.amazonaws.com/kube-backend-repo
-  newTag: 95afeafb2a8800926cad3c65afbcfcac91835ffe
+  newTag: 5bddd2f9ed1cd7708ef3d6a8b25e996ab118df51
